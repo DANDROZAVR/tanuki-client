@@ -9,7 +9,7 @@ import ScriptManagerScreen from './subpages/script_manager';
 import FileViewScreen from './subpages/file_view';
 import PickServerScreen from './subpages/server_picker.tsx';
 
-export function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
@@ -26,5 +26,3 @@ export function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

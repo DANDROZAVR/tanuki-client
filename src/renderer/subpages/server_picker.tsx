@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { pickServer } from '../network/client.ts';
 import ThemeSelector from '../gui/theme_selector';
 
-export function PickServerScreen() {
+export default function PickServerScreen() {
   const navigate = useNavigate();
   const [serverUrl, setServerUrl] = React.useState('http://localhost:3001');
 
@@ -32,12 +32,8 @@ export function PickServerScreen() {
       </form>
       <label>
         Choose theme:
-        <ThemeSelector
-          updateEditorTheme={(val: string) => {}}
-        />
+        <ThemeSelector updateEditorTheme={(val: string) => {}} />
       </label>
     </div>
   );
 }
-
-export default PickServerScreen;

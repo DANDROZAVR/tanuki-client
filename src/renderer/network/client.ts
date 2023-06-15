@@ -11,7 +11,7 @@ export function getCurrentDirectory() {
 }
 
 export interface DirInfo {
-  name: string;
+  title: string;
   description: string;
   isDirectory: boolean;
 }
@@ -153,7 +153,7 @@ export async function loadScript(
   }
 }
 
-async function loadCurrentDirectory(callback) {
+export async function loadCurrentDirectory(callback) {
   sendRequest(
     JSON.stringify({
       type: 'loadDirectory',
@@ -163,8 +163,8 @@ async function loadCurrentDirectory(callback) {
     }),
     (response) => {
       if (response.status === 0) {
-        // in response.contents we get array of dirInfo - contents of chosen directory
-        const contents = response.contents as DirInfo[];
+        // in response.message.contents we get array of dirInfo - contents of chosen directory
+        const contents = response.message.contents as DirInfo[];
         callback(contents);
       }
     }

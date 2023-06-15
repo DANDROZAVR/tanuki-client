@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { createUser } from '../network/client.ts';
 import ThemeSelector from '../gui/theme_selector';
 
-export function SignInScreen() {
+export default function SignInScreen() {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -52,12 +52,8 @@ export function SignInScreen() {
       <Link to="/pick_server">Pick another server.</Link>
       <label>
         Choose theme:
-        <ThemeSelector
-          updateEditorTheme={(val: string) => {}}
-        />
+        <ThemeSelector updateEditorTheme={(val: string) => {}} />
       </label>
     </div>
   );
 }
-
-export default SignInScreen;

@@ -1,70 +1,95 @@
 import './style.css';
-import React from 'react';
+import { React, useRef, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { sendScript, execScript, loadScript, scheduleScript } from '../network/client.ts';
-import 'reactflow/dist/style.css';
-import { RenderOptions } from '@testing-library/react';
-import { Script } from 'renderer/script';
 import { Options } from 'renderer/render_options';
+import { sendScript, execScript, scheduleScript } from '../network/client.ts';
+import 'reactflow/dist/style.css';
 import { FunctionButton } from './util';
-import { scheduler } from 'timers/promises';
+import ThemeSelector from './theme_selector';
 
-const initialScript: Script = {
-  name: "script",
-  lines: [],
-};
+export default function TextEditor({
+  renderOptions,
+  scriptState,
+}: {
+  renderOptions: Options;
+  scriptState: FileState;
+}) {
+  const editorRef = useRef<string>(null);
+  const [theme, setTheme] = useState('vs-light');
 
+  useEffect(() => {
+    async function getTheme() {
+      const darkTheme = await window.theme.get();
+      setTheme(darkTheme ? 'vs-dark' : 'vs-light');
+    }
+    getTheme();
+  }, []);
 
-export function TextEditor({renderOptions, editorTheme, scriptState}: {renderOptions: Options, editorTheme: string, scriptState: FileState}) {
-  const editorRef = React.useRef<string>(null);
   // eslint-disable-next-line no-unused-vars
   function onEditorMount(editor, monaco) {
-    console.log(editorRef.value)
+    console.log(editorRef.value);
     editorRef.current = editor;
-  }
-
-  console.log(scriptState);
-  function CodeSection() {
-    return (<section className="form-section">
-          <div id="text-editor">
-            <Editor
-              //value={initialScript.lines.reduce((res,cur) => res + '\n' + cur, '')}
-              value = {scriptState.value}
-              height="50vh"
-              theme={editorTheme}
-              defaultLanguage={renderOptions.defaultLanguage}
-              // eslint-disable-next-line react/jsx-no-bind
-              onMount={onEditorMount}
-            />
-          </div>
-        </section>);
   }
 
   return (
     <div>
-      <CodeSection/>
-      <FunctionButton id="scriptTitle" text="Send" on_click = {() => {
-        const input = document.getElementById('scriptTitle') as HTMLInputElement | null;
-        sendScript(editorRef.current.getValue(), input?.value);
-        }}/>
-      <FunctionButton id="scriptToRun" text="Run script" on_click = {() => {
-        const input = document.getElementById('scriptToRun') as HTMLInputElement | null;
-        execScript(input?.value);
-      }}/>
+      <section className="form-section" /* text editor */>
+        <div id="text-editor">
+          <Editor
+            value={scriptState.value}
+            height="50vh"
+            theme={theme}
+            defaultLanguage={renderOptions.defaultLanguage}
+            // eslint-disable-next-line react/jsx-no-bind
+            onMount={onEditorMount}
+          />
+        </div>
+      </section>
+      <FunctionButton
+        id="scriptTitle"
+        buttonText="Send"
+        placeholder="script"
+        onClick={(input) => {
+          sendScript(editorRef.current.getValue(), input);
+        }}
+      />
+      <FunctionButton
+        id="scriptToRun"
+        buttonText="Run script"
+        placeholder="script"
+        onClick={(input) => {
+          execScript(input);
+        }}
+      />
       <section className="form-section">
         <input id="scheduleTitle" type="text" placeholder="my_script" />
-        <input id="scheduleTime" type="text" placeholder={new Date().toLocaleString()}/>
-        <button type="button" onClick={() => {
-          const title = document.getElementById('scheduleTitle') as HTMLInputElement | null;
-          const time = document.getElementById('scheduleTime') as HTMLInputElement | null;
-          console.log(new Date('12.06.2023, 09:49:38'));
-          scheduleScript(title?.value, time?.value);
-        }}>
+        <input
+          id="scheduleTime"
+          type="text"
+          placeholder={new Date().toLocaleString()}
+        />
+        <button
+          type="button"
+          onClick={(str) => {
+            const title = document.getElementById(
+              'scheduleTitle'
+            ) as HTMLInputElement | null;
+            const time = document.getElementById(
+              'scheduleTime'
+            ) as HTMLInputElement | null;
+            scheduleScript(title?.value, time?.value);
+          }}
+        >
           Schedule
         </button>
+      </section>
+      <section>
+        <ThemeSelector
+          updateEditorTheme={(val: string) => {
+            setTheme(val);
+          }}
+        />
       </section>
     </div>
   );
 }
-
-export default TextEditor;

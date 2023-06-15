@@ -2,8 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RequestFieldAndButton } from '../gui/util';
 import { DirInfo, loadScript, logOut } from '../network/client';
+import DirectoryBrowser from '../gui/directory_browser';
 
-export function ScriptManagerScreen() {
+export default function ScriptManagerScreen() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = React.useState('');
 
@@ -18,8 +19,7 @@ export function ScriptManagerScreen() {
         navigate('/file_view', {
           state: {
             scriptState,
-              //themeState: window.theme.get(),
-            },
+          },
         });
       },
       (directoryState) => {}
@@ -29,12 +29,15 @@ export function ScriptManagerScreen() {
   function goToPlayground() {
     navigate('/playground');
   }
+
   function onLogOut() {
-    logOut()
+    logOut();
     navigate('/login');
   }
+
   return (
-    <div className="formContainer">
+    <>
+      <DirectoryBrowser />
       <section className="form-section">
         <RequestFieldAndButton
           id="loadScript"
@@ -50,8 +53,6 @@ export function ScriptManagerScreen() {
       <button type="button" onClick={onLogOut}>
         Log Out
       </button>
-    </div>
+    </>
   );
 }
-
-export default ScriptManagerScreen;

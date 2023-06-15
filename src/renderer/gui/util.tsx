@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 
 export function RequestFieldAndButton({
   id,
@@ -11,7 +11,7 @@ export function RequestFieldAndButton({
   buttonText: string;
   callback;
 }) {
-  const [textValue, setTextValue] = React.useState('');
+  const [textValue, setTextValue] = useState('');
   return (
     <>
       <input
@@ -30,18 +30,27 @@ export function RequestFieldAndButton({
 
 export function FunctionButton({
   id,
-  text,
-  on_click,
+  buttonText,
+  placeholder,
+  onClick,
 }: {
   id: string;
-  text: string;
-  on_click: any;
+  buttonText: string;
+  placeholder: string;
+  onClick: any;
 }) {
+  const [contents, setContents] = useState('');
   return (
     <section className="form-section">
-      <input id={id} type="text" placeholder="my_script" />
-      <button type="button" onClick={on_click}>
-        {text}
+      <input
+        id={id}
+        value={contents}
+        type="text"
+        placeholder={placeholder}
+        onChange={(e) => setContents(e.target.value)}
+      />
+      <button type="button" onClick={() => onClick(contents)}>
+        {buttonText}
       </button>
     </section>
   );

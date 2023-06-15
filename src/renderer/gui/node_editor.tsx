@@ -1,4 +1,3 @@
-import { stringify } from 'querystring';
 import React from 'react';
 import {
   ReactFlow,
@@ -24,14 +23,18 @@ import { FunctionButton } from './util';
   console.log(res);
 } */
 
-function SpawnButton({on_click} : {on_click:any}) {
-  return (<><button onClick={on_click}>Spawn</button></>);
+function SpawnButton({ onClick }: { onClick: any }) {
+  return (
+    <button type="button" onClick={onClick}>
+      Spawn
+    </button>
+  );
 }
 
 const nodeTypes = {
   scriptLine: ScriptLineNode,
   scriptStart: ScriptStartNode,
-  scriptFinish: ScriptFinishNode
+  scriptFinish: ScriptFinishNode,
 };
 
 const initialNodes = [
@@ -42,7 +45,7 @@ const initialNodes = [
     data: {},
   },
 ];
-const initialEdges = Array<{id: string, source: string, target: string}>;
+const initialEdges = Array<{ id: string; source: string; target: string }>;
 
 export function NodeEditor() {
   const [nodes, setNodes] = React.useState(initialNodes);
@@ -69,25 +72,24 @@ export function NodeEditor() {
     const y_pos = nodes[len - 1].position.y + 100; //TODO: centralize this part
     const n_id = nodes.length.toString();
     const p_id = nodes[len - 1].id;
-    console.log("SPAWN");
+    console.log('SPAWN');
     setNodes([
       ...nodes,
       {
         id: n_id,
         type: 'scriptLine',
-        position: {x: x_pos, y: y_pos},
-        data: {line:''}
-      }
+        position: { x: x_pos, y: y_pos },
+        data: { line: '' },
+      },
     ]);
     setEdges([
       ...edges,
       {
         id: edges.length.toString(),
         source: p_id,
-        target: n_id
-      }
+        target: n_id,
+      },
     ]);
-
   };
 
   const ParseNodes = () => {
@@ -98,26 +100,33 @@ export function NodeEditor() {
 
   return (
     <>
-    <div className="flowContainer">
-      <ReactFlow
-        nodeTypes={nodeTypes}
-        nodes={nodes}
-        onNodesChange={onNodesChange}
-        edges={edges}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        fitView
-      >
-        <Background color="#B8CEFF"/>
-        <Controls className="darkButton" />
-      </ReactFlow>
-    </div>
-    <SpawnButton on_click={spawnNode}/>
-    <FunctionButton id="scriptTitleNode" text="Send" on_click = {() => {
-      const script = ParseNodes(); console.log(script);
-      const input = document.getElementById('scriptTitleNode') as HTMLInputElement | null;      
-      sendScript(script, input?.value);
-      }}/>
+      <div className="flowContainer">
+        <ReactFlow
+          nodeTypes={nodeTypes}
+          nodes={nodes}
+          onNodesChange={onNodesChange}
+          edges={edges}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          fitView
+        >
+          <Background color="#B8CEFF" />
+          <Controls className="darkButton" />
+        </ReactFlow>
+      </div>
+      <SpawnButton on_click={spawnNode} />
+      <FunctionButton
+        id="scriptTitleNode"
+        text="Send"
+        on_click={() => {
+          const script = ParseNodes();
+          console.log(script);
+          const input = document.getElementById(
+            'scriptTitleNode'
+          ) as HTMLInputElement | null;
+          sendScript(script, input?.value);
+        }}
+      />
     </>
   );
 }

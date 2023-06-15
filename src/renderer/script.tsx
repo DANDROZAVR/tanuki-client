@@ -1,4 +1,4 @@
 export interface Script {
-  name: string
-  lines: Array<string>
-};
+  name: string;
+  lines: Array<string>;
+}

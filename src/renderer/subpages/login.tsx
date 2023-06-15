@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { logIn } from '../network/client.ts';
 import ThemeSelector from '../gui/theme_selector';
 
-export function LogInScreen() {
+export default function LogInScreen() {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -61,5 +61,3 @@ export function LogInScreen() {
     </div>
   );
 }
-
-export default LogInScreen;

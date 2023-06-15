@@ -3,20 +3,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { renderOptions } from 'renderer/render_options';
 import TextEditor from '../gui/text_editor';
 
-function FileViewScreen() {
+export default function FileViewScreen() {
   const location = useLocation();
   const navigate = useNavigate();
   function goBack() {
     navigate('/home');
   }
 
-  console.log(state);
-
   return (
     <div>
       <TextEditor
         renderOptions={renderOptions}
-        editorTheme={location.state.themeState}
         scriptState={location.state.scriptState}
       />
       <button type="button" onClick={goBack}>
@@ -25,5 +22,3 @@ function FileViewScreen() {
     </div>
   );
 }
-
-export default FileViewScreen;
