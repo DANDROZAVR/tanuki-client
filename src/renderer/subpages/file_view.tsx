@@ -4,7 +4,7 @@ import { renderOptions } from 'renderer/render_options';
 import TextEditor from '../gui/text_editor';
 
 function FileViewScreen() {
-  const state = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
   function goBack() {
     navigate('/home');
@@ -16,8 +16,8 @@ function FileViewScreen() {
     <div>
       <TextEditor
         renderOptions={renderOptions}
-        editorTheme={state.themeState}
-        scriptState={state.scriptState}
+        editorTheme={location.state.themeState}
+        scriptState={location.state.scriptState}
       />
       <button type="button" onClick={goBack}>
         Go back
