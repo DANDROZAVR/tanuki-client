@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -8,7 +7,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { useNavigate, Link } from 'react-router-dom';
 import { createUser } from '../network/client.ts';
-import ThemeSelector from '../gui/theme_selector';
+import TopAppBar from '../gui/top_bar';
 
 export default function SignUpScreen() {
   const navigate = useNavigate();
@@ -29,6 +28,7 @@ export default function SignUpScreen() {
 
   return (
     <>
+    <TopAppBar />
       <Grid
         container
         spacing={0}
@@ -52,15 +52,15 @@ export default function SignUpScreen() {
                 display="flex"
                 flexDirection="column"
                 maxWidth={400}
-                alignItems="center"
+                alignItems="stretch"
                 justifyContent="center"
                 margin="auto"
                 padding={3}
               >
-                <Typography variant="h6">Sign up to Tanuki</Typography>
+                <Typography variant="h6" align="center">Sign up to Tanuki</Typography>
                 <TextField
                   autoFocus
-                  margin="dense"
+                  margin="normal"
                   label="Username"
                   variant="outlined"
                   value={username}
@@ -71,7 +71,7 @@ export default function SignUpScreen() {
                 <TextField
                   type="password"
                   autoFocus
-                  margin="dense"
+                  margin="normal"
                   label="Password"
                   variant="outlined"
                   value={password}
@@ -79,8 +79,6 @@ export default function SignUpScreen() {
                     setPassword(event.target.value);
                   }}
                 />
-                <Link to="/login" align="center">Already have an account? Log in here.</Link>
-                <Link to="/pick_server">Pick another server.</Link>
                 <Button variant="contained" onClick={(e) => onSubmit(e)}>
                   Sign up
                 </Button>
@@ -88,15 +86,7 @@ export default function SignUpScreen() {
             </Paper>
           </Box>
         </Grid>
-      </Grid>
-      <div className="formContainer">
-        <span className="red">{errorMessage}</span>
-
-        <label>
-          Choose theme:
-          <ThemeSelector updateEditorTheme={(val: string) => {}} />
-        </label>
-      </div>
+      </Grid><span className="red">{errorMessage}</span>
     </>
   );
 }

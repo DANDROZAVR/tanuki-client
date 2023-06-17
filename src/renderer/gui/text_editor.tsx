@@ -26,8 +26,7 @@ export default function TextEditor({
   }, []);
 
   // eslint-disable-next-line no-unused-vars
-  function onEditorMount(editor, monaco) {
-    console.log(editorRef.value);
+  const onEditorMount = (editor, monaco) => {
     editorRef.current = editor;
   }
 
@@ -40,7 +39,6 @@ export default function TextEditor({
             height="50vh"
             theme={theme}
             defaultLanguage={renderOptions.defaultLanguage}
-            // eslint-disable-next-line react/jsx-no-bind
             onMount={onEditorMount}
           />
         </div>
@@ -82,13 +80,6 @@ export default function TextEditor({
         >
           Schedule
         </button>
-      </section>
-      <section>
-        <ThemeSelector
-          updateEditorTheme={(val: string) => {
-            setTheme(val);
-          }}
-        />
       </section>
     </div>
   );

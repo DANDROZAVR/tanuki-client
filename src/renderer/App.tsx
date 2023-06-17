@@ -9,7 +9,7 @@ import Layout from './subpages/layout';
 import LogInScreen from './subpages/login';
 import SignUpScreen from './subpages/signup';
 import ScriptManagerScreen from './subpages/script_manager';
-import FileViewScreen from './subpages/file_view';
+import ScriptViewScreen from './subpages/script_view';
 import PickServerScreen from './subpages/server_picker.tsx';
 import VisualScriptViewScreen from './subpages/visual_script_view.tsx';
 
@@ -20,6 +20,9 @@ export default function App() {
     return createTheme({
       palette: {
         mode: prefersDarkMode ? 'dark' : 'light',
+        white: {
+          main: '#FFFFFF',
+        },
       },
     });
   }, [prefersDarkMode]);
@@ -35,7 +38,7 @@ export default function App() {
             <Route path="signup" element={<SignUpScreen />} />
             <Route path="home" element={<ScriptManagerScreen />} />
             <Route path="playground" element={<Playground />} />
-            <Route path="file_view" element={<FileViewScreen />} />
+            <Route path="script_view" element={<ScriptViewScreen />} />
             <Route
               path="visual_script_view"
               element={<VisualScriptViewScreen />}

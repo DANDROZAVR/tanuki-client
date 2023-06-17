@@ -23,6 +23,7 @@ export function TextDialog({
 }) {
   const [value, setValue] = useState('');
   const handleSubmit = () => {
+    setValue('');
     onSubmit(value);
   };
 

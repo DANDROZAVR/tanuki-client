@@ -28,7 +28,8 @@ export default function ScriptManagerScreen() {
         isDirectory: false,
       } as DirInfo,
       (scriptState) => {
-        navigate('/file_view', {
+        console.log('hmmm');
+        navigate('/script_view', {
           state: {
             scriptState,
           },
@@ -145,10 +146,6 @@ export default function ScriptManagerScreen() {
       </div>
       {newScriptDialog}
       {newVisualScriptDialog}
-      <label>
-        Choose theme:
-        <ThemeSelector updateEditorTheme={(val: string) => {}} />
-      </label>
     </div>
   );
 }

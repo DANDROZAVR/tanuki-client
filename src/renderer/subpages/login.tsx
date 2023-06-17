@@ -8,6 +8,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { logIn } from '../network/client';
 import ThemeSelector from '../gui/theme_selector';
+import TopBar from '../gui/top_bar';
 
 export default function LogInScreen() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function LogInScreen() {
 
   return (
     <>
+      <TopBar />
       <Grid
         container
         spacing={0}
@@ -51,15 +53,15 @@ export default function LogInScreen() {
                 display="flex"
                 flexDirection="column"
                 maxWidth={400}
-                alignItems="center"
+                alignItems="stretch"
                 justifyContent="center"
                 margin="auto"
                 padding={3}
               >
-                <Typography variant="h6">Log in to Tanuki</Typography>
+                <Typography variant="h6" align="center">Log in to Tanuki</Typography>
                 <TextField
                   autoFocus
-                  margin="dense"
+                  margin="normal"
                   label="Username"
                   variant="outlined"
                   value={username}
@@ -70,7 +72,7 @@ export default function LogInScreen() {
                 <TextField
                   type="password"
                   autoFocus
-                  margin="dense"
+                  margin="normal"
                   label="Password"
                   variant="outlined"
                   value={password}
@@ -78,10 +80,6 @@ export default function LogInScreen() {
                     setPassword(event.target.value);
                   }}
                 />
-                <Link to="/signup" align="center">
-                  Doesn&apos;t have an account? Create it here.
-                </Link>
-                <Link to="/pick_server">Pick another server.</Link>
                 <Button variant="contained" onClick={onSubmit}>
                   Log in
                 </Button>
@@ -92,11 +90,6 @@ export default function LogInScreen() {
       </Grid>
       <div className="formContainer">
         <span className="red">{errorMessage}</span>
-
-        <label>
-          Choose theme:
-          <ThemeSelector updateEditorTheme={(val: string) => {}} />
-        </label>
       </div>
     </>
   );
