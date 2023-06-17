@@ -2,7 +2,7 @@ import './style.css';
 import { React, useRef, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { Options } from 'renderer/render_options';
-import { sendScript, execScript, scheduleScript } from '../network/client.ts';
+import { sendScript, execScript, scheduleScript, sendOrUpdate } from '../network/client.ts';
 import 'reactflow/dist/style.css';
 import { FunctionButton } from './util';
 import ThemeSelector from './theme_selector';
@@ -48,9 +48,9 @@ export default function TextEditor({
       <FunctionButton
         id="scriptTitle"
         buttonText="Send"
-        placeholder="script"
+        placeholder={scriptState.scriptName}
         onClick={(input) => {
-          sendScript(editorRef.current.getValue(), input);
+          sendOrUpdate(editorRef.current.getValue(), input);
         }}
       />
       <FunctionButton
