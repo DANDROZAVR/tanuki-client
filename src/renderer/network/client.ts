@@ -90,8 +90,8 @@ export async function sendOrUpdate(
     }),
     (response) => {
       if (
-        response.status === 1 &&
-        response.message === 'Script with that name already exist'
+        response.status == 1 &&
+        response.message == "Script with that name already exists"
       ) {
         updateScript(script, scriptName, description);
       }
