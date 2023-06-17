@@ -1,5 +1,10 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import { useNavigate } from 'react-router-dom';
 import { pickServer } from '../network/client.ts';
 import ThemeSelector from '../gui/theme_selector';
 
@@ -7,33 +12,67 @@ export default function PickServerScreen() {
   const navigate = useNavigate();
   const [serverUrl, setServerUrl] = React.useState('http://localhost:3001');
 
-  function onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
     pickServer(serverUrl);
     navigate('/login');
-  }
+  };
 
   return (
-    <div className="formContainer">
-      <form onSubmit={onSubmit} className="credentialsForm">
-        <label htmlFor="server_url">
-          Server address:
-          <input
-            className="credentialsInput"
-            value={serverUrl}
-            onChange={(e) => setServerUrl(e.target.value)}
-            type="text"
-            placeholder="Server URL"
-            id="server_url"
-            name="server_url"
-          />
+    <>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ minHeight: '100vh' }}
+      >
+        <Grid item xs={3}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            maxWidth={400}
+            alignItems="center"
+            justifyContent="center"
+            margin="auto"
+            padding={3}
+          >
+            <Paper elevation={3}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                maxWidth={400}
+                alignItems="center"
+                justifyContent="center"
+                margin="auto"
+                padding={3}
+              >
+                <TextField
+                  autoFocus
+                  margin="normal"
+                  id="outlined-basic"
+                  label="Server URL"
+                  variant="outlined"
+                  value={serverUrl}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setServerUrl(event.target.value);
+                  }}
+                />
+                <Button variant="contained" onClick={(e) => onSubmit(e)}>
+                  Pick server
+                </Button>
+              </Box>
+            </Paper>
+          </Box>
+        </Grid>
+      </Grid>
+      <div className="formContainer">
+        <label>
+          Choose theme:
+          <ThemeSelector updateEditorTheme={(val: string) => {}} />
         </label>
-        <button type="submit">Choose server</button>
-      </form>
-      <label>
-        Choose theme:
-        <ThemeSelector updateEditorTheme={(val: string) => {}} />
-      </label>
-    </div>
+      </div>
+    </>
   );
 }

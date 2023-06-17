@@ -1,4 +1,3 @@
-import './style.css';
 import 'reactflow/dist/style.css';
 import React from 'react';
 

@@ -11,12 +11,14 @@ export function TextDialog({
   onSubmit,
   onCancel,
   open,
+  title,
   label,
 }: {
   // eslint-disable-next-line no-unused-vars
   onSubmit: (val: string) => void;
   onCancel: () => void;
   open: boolean;
+  title: string;
   label: string;
 }) {
   const [value, setValue] = useState('');
@@ -25,18 +27,19 @@ export function TextDialog({
   };
 
   const handleCancel = () => {
+    setValue('');
     onCancel();
   };
 
   return (
     <Dialog onClose={handleCancel} open={open}>
-      <DialogTitle>{label}</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
           id="outlined-basic"
-          label="Directory name"
+          label={label}
           variant="outlined"
           value={value}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,15 +1,16 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import { logIn } from '../network/client';
+import { useNavigate, Link } from 'react-router-dom';
+import { createUser } from '../network/client.ts';
 import ThemeSelector from '../gui/theme_selector';
 
-export default function LogInScreen() {
+export default function SignUpScreen() {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -17,11 +18,11 @@ export default function LogInScreen() {
 
   function onSubmit(e) {
     e.preventDefault();
-    logIn(username, password, (response) => {
+    createUser(username, password, response => {
       if (response.status !== 0) {
-        setErrorMessage('Error: ' + response.message);
+        setErrorMessage("Error: " + response.message);
       } else {
-        navigate('/home');
+        navigate('/login');
       }
     });
   }
@@ -56,7 +57,7 @@ export default function LogInScreen() {
                 margin="auto"
                 padding={3}
               >
-                <Typography variant="h6">Log in to Tanuki</Typography>
+                <Typography variant="h6">Sign up to Tanuki</Typography>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -78,12 +79,10 @@ export default function LogInScreen() {
                     setPassword(event.target.value);
                   }}
                 />
-                <Link to="/signup" align="center">
-                  Doesn&apos;t have an account? Create it here.
-                </Link>
+                <Link to="/login" align="center">Already have an account? Log in here.</Link>
                 <Link to="/pick_server">Pick another server.</Link>
                 <Button variant="contained" onClick={(e) => onSubmit(e)}>
-                  Log in
+                  Sign up
                 </Button>
               </Box>
             </Paper>

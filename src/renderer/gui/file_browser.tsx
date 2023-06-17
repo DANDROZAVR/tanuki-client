@@ -1,6 +1,6 @@
-import './style.css';
 import { React, useEffect, useState } from 'react';
 import { ChonkyActions, FullFileBrowser } from 'chonky';
+import { useTheme } from '@mui/material/styles';
 import { TextDialog } from './util';
 import {
   setCurrentPath,
@@ -11,23 +11,18 @@ import {
   deleteScript,
 } from '../network/client';
 
-export default function FileBrowser({
+export default function RemoteFileBrowser({
   onOpenFile,
 }: {
   // eslint-disable-next-line no-unused-vars
   onOpenFile: (val: string) => void;
 }) {
   const [newFolderDialogOpen, setNewFolderDialogOpen] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const theme = useTheme();
   const [entries, setEntries] = useState([]);
   const [path, setPath] = useState('');
 
   useEffect(() => {
-    async function getTheme() {
-      const darkTheme = await window.theme.get();
-      setIsDarkTheme(darkTheme);
-    }
-    getTheme();
     loadHomeDirectory((e) => {
       setEntries(e);
       setPath(getCurrentPath());
@@ -61,9 +56,6 @@ export default function FileBrowser({
       });
     } else if (data.id === ChonkyActions.CreateFolder.id) {
       setNewFolderDialogOpen(true);
-      loadCurrentDirectory((e) => {
-        setEntries(e);
-      });
     }
   };
 
@@ -110,24 +102,35 @@ export default function FileBrowser({
       onCancel={() => {
         setNewFolderDialogOpen(false);
       }}
-      label="Create directory"
+      title="Create new directory"
+      label="Directory name"
     />
   );
 
   return (
-    <>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <FullFileBrowser
         disableDragAndDrop
         className="file_browser"
         defaultFileViewActionId={ChonkyActions.EnableListView.id}
         fileActions={[ChonkyActions.DeleteFiles, ChonkyActions.CreateFolder]}
-        disableDefaultFileActions={[ChonkyActions.OpenSelection]}
-        darkMode={isDarkTheme}
+        disableDefaultFileActions={[
+          ChonkyActions.SelectAllFiles.id,
+          ChonkyActions.OpenSelection.id,
+        ]}
+        darkMode={theme.palette.mode === 'dark'}
         folderChain={folderChain}
         files={files}
         onFileAction={handleAction}
       />
       {newFolderDialog}
-    </>
+    </div>
   );
 }

@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Playground from './gui/playground';
 import Layout from './subpages/layout';
 import LogInScreen from './subpages/login';
-import SignInScreen from './subpages/signin';
+import SignUpScreen from './subpages/signup';
 import ScriptManagerScreen from './subpages/script_manager';
 import FileViewScreen from './subpages/file_view';
 import PickServerScreen from './subpages/server_picker.tsx';
@@ -15,15 +15,13 @@ import PickServerScreen from './subpages/server_picker.tsx';
 export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode]
-  );
+  const theme = React.useMemo(() => {
+    return createTheme({
+      palette: {
+        mode: prefersDarkMode ? 'dark' : 'light',
+      },
+    });
+  }, [prefersDarkMode]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -33,7 +31,7 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<PickServerScreen />} />
             <Route path="login" element={<LogInScreen />} />
-            <Route path="signin" element={<SignInScreen />} />
+            <Route path="signup" element={<SignUpScreen />} />
             <Route path="home" element={<ScriptManagerScreen />} />
             <Route path="playground" element={<Playground />} />
             <Route path="file_view" element={<FileViewScreen />} />
