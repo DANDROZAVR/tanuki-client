@@ -11,6 +11,7 @@ import SignUpScreen from './subpages/signup';
 import ScriptManagerScreen from './subpages/script_manager';
 import FileViewScreen from './subpages/file_view';
 import PickServerScreen from './subpages/server_picker.tsx';
+import VisualScriptViewScreen from './subpages/visual_script_view.tsx';
 
 export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -35,6 +36,10 @@ export default function App() {
             <Route path="home" element={<ScriptManagerScreen />} />
             <Route path="playground" element={<Playground />} />
             <Route path="file_view" element={<FileViewScreen />} />
+            <Route
+              path="visual_script_view"
+              element={<VisualScriptViewScreen />}
+            />
             <Route path="pick_server" element={<PickServerScreen />} />
           </Route>
         </Routes>

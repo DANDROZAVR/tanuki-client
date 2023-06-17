@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import {
   ReactFlow,
   Background,
@@ -10,7 +10,7 @@ import {
 import 'reactflow/dist/style.css';
 import { sendScript } from 'renderer/network/client';
 import { ScriptLineNode, ScriptStartNode, ScriptFinishNode } from './nodes.tsx';
-import { FunctionButton } from './util';
+import { FunctionButton } from './util';*/
 
 /* function traverse(linesStates: string[], item: Node) {
   let curr: Node = item;
@@ -23,7 +23,7 @@ import { FunctionButton } from './util';
   console.log(res);
 } */
 
-function SpawnButton({ onClick }: { onClick: any }) {
+/*function SpawnButton({ onClick }: { onClick: any }) {
   return (
     <button type="button" onClick={onClick}>
       Spawn
@@ -45,9 +45,9 @@ const initialNodes = [
     data: {},
   },
 ];
-const initialEdges = Array<{ id: string; source: string; target: string }>;
+const initialEdges = Array<{ id: string; source: string; target: string }>;*/
 
-export function NodeEditor() {
+export default function NodeEditor() {/*
   const [nodes, setNodes] = React.useState(initialNodes);
   const [edges, setEdges] = React.useState(initialEdges);
 
@@ -65,7 +65,19 @@ export function NodeEditor() {
     []
   );
 
+  const updateNodeData = (id, data) => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          node.style = { ...node.style, data };
+        }
+        return node;
+      })
+    );
+  }
+
   const spawnNode = () => {
+    console.log(nodes);
     const len = nodes.length;
     console.log(JSON.stringify(nodes));
     const x_pos = nodes[len - 1].position.x;
@@ -100,7 +112,12 @@ export function NodeEditor() {
 
   return (
     <>
-      <div className="flowContainer">
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
         <ReactFlow
           nodeTypes={nodeTypes}
           nodes={nodes}
@@ -128,7 +145,5 @@ export function NodeEditor() {
         }}
       />
     </>
-  );
+  );*/
 }
-
-export default NodeEditor;

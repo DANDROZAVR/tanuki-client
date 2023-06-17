@@ -15,7 +15,7 @@ export default function LogInScreen() {
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  function onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
     logIn(username, password, (response) => {
       if (response.status !== 0) {
@@ -82,7 +82,7 @@ export default function LogInScreen() {
                   Doesn&apos;t have an account? Create it here.
                 </Link>
                 <Link to="/pick_server">Pick another server.</Link>
-                <Button variant="contained" onClick={(e) => onSubmit(e)}>
+                <Button variant="contained" onClick={onSubmit}>
                   Log in
                 </Button>
               </Box>

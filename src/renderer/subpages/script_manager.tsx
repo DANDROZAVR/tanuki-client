@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import { TextDialog } from '../gui/util';
 import { DirInfo, loadScript, sendScript, logOut } from '../network/client';
 import RemoteFileBrowser from '../gui/file_browser';
@@ -10,14 +9,15 @@ import ThemeSelector from '../gui/theme_selector';
 export default function ScriptManagerScreen() {
   const navigate = useNavigate();
   const [newScriptOpen, setNewScriptOpen] = useState(false);
+  const [newVisualScriptOpen, setNewVisualScriptOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const onSubmit = () => {
-    setNewScriptOpen(false);
+  const newScript = () => {
+    setNewScriptOpen(true);
   };
 
-  const onClick = () => {
-    setNewScriptOpen(true);
+  const newVisualScript = () => {
+    setNewVisualScriptOpen(true);
   };
 
   const onLoadScript = (scriptName: string) => {
@@ -36,7 +36,25 @@ export default function ScriptManagerScreen() {
       },
       (directoryState) => {}
     );
-  }
+  };
+
+  const onLoadVisualScript = (scriptName: string) => {
+    loadScript(
+      {
+        name: scriptName,
+        description: '',
+        isDirectory: false,
+      } as DirInfo,
+      (scriptState) => {
+        navigate('/visual_script_view', {
+          state: {
+            scriptState,
+          },
+        });
+      },
+      (directoryState) => {}
+    );
+  };
 
   const goToPlayground = () => {
     navigate('/playground');
@@ -69,6 +87,28 @@ export default function ScriptManagerScreen() {
     />
   );
 
+  const newVisualScriptDialog = (
+    <TextDialog
+      open={newVisualScriptOpen}
+      onSubmit={(value) => {
+        setNewVisualScriptOpen(false);
+        sendScript('', value, '')
+          .then((val) => {
+            onLoadVisualScript(value);
+            return val;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }}
+      onCancel={() => {
+        setNewVisualScriptOpen(false);
+      }}
+      title="Create script"
+      label="Script name"
+    />
+  );
+
   return (
     <div
       style={{
@@ -90,8 +130,11 @@ export default function ScriptManagerScreen() {
           padding: '10px',
         }}
       >
-        <Button color="primary" variant="contained" onClick={onClick}>
+        <Button variant="contained" onClick={newScript}>
           New script
+        </Button>
+        <Button variant="contained" onClick={newVisualScript}>
+          New visual script
         </Button>
         <Button variant="contained" onClick={goToPlayground}>
           Go to playground
@@ -101,6 +144,7 @@ export default function ScriptManagerScreen() {
         </Button>
       </div>
       {newScriptDialog}
+      {newVisualScriptDialog}
       <label>
         Choose theme:
         <ThemeSelector updateEditorTheme={(val: string) => {}} />
