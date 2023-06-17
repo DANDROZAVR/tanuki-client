@@ -6,7 +6,11 @@ let signedUsername = '';
 let signedPassword = '';
 let currentDir = '';
 
-export function getCurrentDirectory() {
+export function setCurrentPath(path: string) {
+  currentDir = path;
+}
+
+export function getCurrentPath() {
   return currentDir;
 }
 
@@ -145,8 +149,6 @@ export async function loadScript(
             defaultLanguage: 'typescript',
           } as FileState;
           scriptCallback(scriptState);
-        } else {
-          alert(response.message);
         }
       }
     );

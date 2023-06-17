@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RequestFieldAndButton } from '../gui/util';
-import { DirInfo, loadScript, logOut } from '../network/client';
-import DirectoryBrowser from '../gui/directory_browser';
+import Button from '@mui/material/Button';
+import { TextDialog, RequestFieldAndButton } from '../gui/util';
+import { DirInfo, loadScript, sendScript, logOut } from '../network/client';
+import FileBrowser from '../gui/file_browser';
 
 export default function ScriptManagerScreen() {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [newScriptOpen, setNewScriptOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const onSubmit = () => {
+    setNewScriptOpen(false);
+  };
+
+  const onClick = () => {
+    setNewScriptOpen(true);
+  };
 
   function onLoadScript(scriptName: string) {
     loadScript(
@@ -35,24 +45,42 @@ export default function ScriptManagerScreen() {
     navigate('/login');
   }
 
+  const newScriptDialog = (
+    <TextDialog
+      open={newScriptOpen}
+      onSubmit={(value) => {
+        setNewScriptOpen(false);
+        sendScript('', value, '')
+          .then((val) => {
+            onLoadScript(value);
+            return val;
+          })
+          .catch((e) => {console.log(e)});
+      }}
+      onCancel={() => {
+        setNewScriptOpen(false);
+      }}
+      label="Create script"
+    />
+  );
+
   return (
     <>
-      <DirectoryBrowser />
-      <section className="form-section">
-        <RequestFieldAndButton
-          id="loadScript"
-          placeholder="script"
-          buttonText="Load script"
-          callback={(str) => onLoadScript(str)}
-        />
-      </section>
-      <button type="button" onClick={goToPlayground}>
+      <FileBrowser
+        onOpenFile={(val) => {
+          onLoadScript(val);
+        }}
+      />
+      <Button variant="contained" onClick={onClick}>
+        New script
+      </Button>
+      <Button variant="contained" onClick={goToPlayground}>
         Go to playground
-      </button>
-      <span className="red">{errorMessage}</span>
-      <button type="button" onClick={onLogOut}>
-        Log Out
-      </button>
+      </Button>
+      <Button variant="contained" onClick={onLogOut}>
+        Log out
+      </Button>
+      {newScriptDialog}
     </>
   );
 }

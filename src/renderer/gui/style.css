@@ -2,7 +2,7 @@
   color-scheme: light dark;
 }
 
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
   body { background: #333; color: white; }
   section.form-section { border-color: #444; }
   .nodeSurface {
@@ -87,6 +87,10 @@ label {
   height: 100%;
 }
 
+.fileBrowser {
+  height: 70%;
+}
+
 .nodeSurface {
   border-radius: 10px;
   font-size: 1rem;
@@ -96,9 +100,9 @@ label {
 }
 
 
-#text-editor {
+#text-editor {*/
   /*width: 100%;*/
-}
+/*}
 
 section.form-section {
   margin: 5px;
@@ -125,7 +129,7 @@ input {
 
 input:focus {
   border: 1px solid #0080ff;
-}
+}*/
 /*input:optional {
   border-color: gray;
 }
