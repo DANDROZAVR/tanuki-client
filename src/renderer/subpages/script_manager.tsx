@@ -69,16 +69,10 @@ export default function ScriptManagerScreen() {
   const newScriptDialog = (
     <TextDialog
       open={newScriptOpen}
-      onSubmit={(value) => {
+      onSubmit={async (value) => {
         setNewScriptOpen(false);
-        sendScript('', value, '')
-          .then((val) => {
-            onLoadScript(value);
-            return val;
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+        await sendScript('', value, '');
+        onLoadScript(value);
       }}
       onCancel={() => {
         setNewScriptOpen(false);
@@ -91,16 +85,10 @@ export default function ScriptManagerScreen() {
   const newVisualScriptDialog = (
     <TextDialog
       open={newVisualScriptOpen}
-      onSubmit={(value) => {
+      onSubmit={async (value) => {
         setNewVisualScriptOpen(false);
-        sendScript('', value, '')
-          .then((val) => {
-            onLoadVisualScript(value);
-            return val;
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+        await sendScript('', value, '');
+        onLoadVisualScript(value);
       }}
       onCancel={() => {
         setNewVisualScriptOpen(false);

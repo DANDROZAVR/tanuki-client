@@ -28,7 +28,7 @@ export default function TextEditor({
   // eslint-disable-next-line no-unused-vars
   const onEditorMount = (editor, monaco) => {
     editorRef.current = editor;
-  }
+  };
 
   return (
     <div>

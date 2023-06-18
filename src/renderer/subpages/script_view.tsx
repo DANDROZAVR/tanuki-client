@@ -7,11 +7,10 @@ import Button from '@mui/material/Button';
 export default function ScriptViewScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  function goBack() {
+  const goBack = () => {
     navigate('/home');
   }
   console.log(location.state.scriptState);
-
   return (
     <div
       style={{

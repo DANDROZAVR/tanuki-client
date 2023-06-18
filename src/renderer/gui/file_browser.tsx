@@ -43,16 +43,11 @@ export default function RemoteFileBrowser({
       }
     } else if (data.id === ChonkyActions.DeleteFiles.id) {
       const filesToDelete = data.state.selectedFiles;
-      filesToDelete.forEach((el) => {
-        deleteScript({ name: el.name, isDirectory: el.isDir })
-          .then(() => {
-            return loadCurrentDirectory((e) => {
-              setEntries(e);
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+      filesToDelete.forEach(async (el) => {
+        await deleteScript({ name: el.name, isDirectory: el.isDir });
+        loadCurrentDirectory((e) => {
+          setEntries(e);
+        });
       });
     } else if (data.id === ChonkyActions.CreateFolder.id) {
       setNewFolderDialogOpen(true);
@@ -87,16 +82,11 @@ export default function RemoteFileBrowser({
   const newFolderDialog = (
     <TextDialog
       open={newFolderDialogOpen}
-      onSubmit={(value) => {
-        createDirectory(value)
-          .then(() => {
-            return loadCurrentDirectory((entriesList) => {
-              setEntries(entriesList);
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+      onSubmit={async (value) => {
+        await createDirectory(value);
+        loadCurrentDirectory((entriesList) => {
+          setEntries(entriesList);
+        });
         setNewFolderDialogOpen(false);
       }}
       onCancel={() => {

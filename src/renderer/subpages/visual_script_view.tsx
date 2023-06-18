@@ -56,15 +56,11 @@ export default function VisualScriptViewScreen() {
 
   const onChangeData = (id, data) => {
     setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          node.style = { ...node.style, data };
-        }
-        return node;
-      })
+      nds.map((node) => (node.id === id ? { ...node, data } : node))
     );
   };
 
+  console.log(nodes);
   const spawnNode = (type: string) => {
     const len = nodes.length;
     const x = len > 0 ? nodes[len - 1].position.x : 0;
