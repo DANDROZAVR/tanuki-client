@@ -1,27 +1,42 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { renderOptions } from 'renderer/render_options';
-import TextEditor from '../gui/text_editor';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import TextEditor from '../gui/text_editor';
 
-export default function ScriptViewScreen() {
+export default function FileViewScreen() {
   const location = useLocation();
   const navigate = useNavigate();
   const goBack = () => {
     navigate('/home');
-  }
-  console.log(location.state.scriptState);
+  };
+
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh',
+        width: '100%',
+        maxHeight: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      {location.state.scriptState.scriptName}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          maxHeight: '100vh',
+          justifyContent: 'center',
+          alignItems: 'left',
+        }}
+      >
+        <Typography variant="normal" align="left" sx={{ margin: '10px' }}>
+          {location.state.scriptState.scriptName}
+        </Typography>
+      </div>
       <TextEditor
         renderOptions={renderOptions}
         scriptState={location.state.scriptState}

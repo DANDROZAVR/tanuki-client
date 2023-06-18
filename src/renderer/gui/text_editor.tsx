@@ -31,18 +31,15 @@ export default function TextEditor({
   };
 
   return (
-    <div>
-      <section className="form-section" /* text editor */>
-        <div id="text-editor">
-          <Editor
-            value={scriptState.value}
-            height="50vh"
-            theme={theme}
-            defaultLanguage={renderOptions.defaultLanguage}
-            onMount={onEditorMount}
-          />
-        </div>
-      </section>
+    <>
+      <Editor
+        value={scriptState.value}
+        width="100%"
+        height="100vh"
+        theme={theme}
+        defaultLanguage={renderOptions.defaultLanguage}
+        onMount={onEditorMount}
+      />
       <FunctionButton
         id="scriptTitle"
         buttonText="Send"
@@ -59,7 +56,6 @@ export default function TextEditor({
           execScript(input);
         }}
       />
-      <section className="form-section">
         <input id="scheduleTitle" type="text" placeholder="my_script" />
         <input
           id="scheduleTime"
@@ -80,7 +76,6 @@ export default function TextEditor({
         >
           Schedule
         </button>
-      </section>
-    </div>
+    </>
   );
 }

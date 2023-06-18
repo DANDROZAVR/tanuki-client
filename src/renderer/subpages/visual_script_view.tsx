@@ -71,6 +71,7 @@ export default function VisualScriptViewScreen() {
       nds.map((node) => (node.id === id ? { ...node, data } : node))
     );
   };
+  console.log(nodes);
 
   const spawnNode = (type: string) => {
     const len = nodes.length;

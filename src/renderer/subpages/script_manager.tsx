@@ -28,7 +28,6 @@ export default function ScriptManagerScreen() {
         isDirectory: false,
       } as DirInfo,
       (scriptState) => {
-        console.log('hmmm');
         navigate('/script_view', {
           state: {
             scriptState,
