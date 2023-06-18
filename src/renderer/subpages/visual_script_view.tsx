@@ -42,8 +42,10 @@ export default function VisualScriptViewScreen() {
   const [edges, setEdges] = React.useState(initialEdges);
 
   const onNodesChange = React.useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
+    (changes) => {
+      console.log(JSON.stringify(nodes));
+      setNodes((nds) => applyNodeChanges(changes, nds));
+    },[]
   );
   const onEdgesChange = React.useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
