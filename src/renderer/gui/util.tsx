@@ -26,9 +26,18 @@ export function TextDialog({
   label: string;
 }) {
   const [value, setValue] = useState('');
+  const [error, setError] = useState(false);
+
+  const validate = (value: string) =>
+    /^[a-zA-Z0-9_]*$/.test(value) && value.length > 0 && value.length < 25;
+
   const handleSubmit = () => {
-    setValue('');
-    onSubmit(value);
+    if (!validate(value)) {
+      setError(true);
+    } else {
+      setValue('');
+      onSubmit(value);
+    }
   };
 
   const handleCancel = () => {
@@ -41,6 +50,7 @@ export function TextDialog({
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <TextField
+          error={error}
           autoFocus
           margin="dense"
           id="outlined-basic"
@@ -50,6 +60,11 @@ export function TextDialog({
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setValue(event.target.value);
           }}
+          helperText={
+            error
+              ? 'Name should contain up to 24 alphanumeric symbols or undersores'
+              : ''
+          }
         />
       </DialogContent>
       <DialogActions>

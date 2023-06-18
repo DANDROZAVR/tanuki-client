@@ -15,15 +15,26 @@ export default function LogInScreen() {
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
+  const validate = (value: string) =>
+    /^[a-zA-Z0-9_]*$/.test(value) && value.length > 0 && value.length < 25;
+
+  const [usernameError, setUsernameError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    logIn(username, password, (response) => {
-      if (response.status !== 0) {
-        setErrorMessage('Error: ' + response.message);
-      } else {
-        navigate('/home');
-      }
-    });
+    if (!validate(username) || !validate(password)) {
+      setUsernameError(!validate(username));
+      setPasswordError(!validate(password));
+    } else {
+      logIn(username, password, (response) => {
+        if (response.status !== 0) {
+          setErrorMessage('Error: ' + response.message);
+        } else {
+          navigate('/home');
+        }
+      });
+    }
   }
 
   return (
@@ -61,6 +72,7 @@ export default function LogInScreen() {
                   Log in to Tanuki
                 </Typography>
                 <TextField
+                  error={usernameError}
                   autoFocus
                   margin="normal"
                   label="Username"
@@ -69,8 +81,14 @@ export default function LogInScreen() {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     setUsername(event.target.value);
                   }}
+                  helperText={
+                    usernameError
+                      ? 'Username should contain up to 24 alphanumeric symbols or undersores'
+                      : ''
+                  }
                 />
                 <TextField
+                  error={passwordError}
                   type="password"
                   autoFocus
                   margin="normal"
@@ -80,6 +98,11 @@ export default function LogInScreen() {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     setPassword(event.target.value);
                   }}
+                  helperText={
+                    passwordError
+                      ? 'Password should contain up to 24 alphanumeric symbols or undersores'
+                      : ''
+                  }
                 />
                 <Button variant="contained" onClick={onSubmit}>
                   Log in
