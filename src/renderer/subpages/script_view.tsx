@@ -1,16 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { renderOptions } from 'renderer/render_options';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextEditor from '../gui/text_editor';
+import { DateTimeDialog } from '../gui/util';
+import {
+  sendScript,
+  execScript,
+  scheduleScript,
+  sendOrUpdate,
+} from '../network/client.ts';
 
 export default function FileViewScreen() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [scriptValue, setScriptValue] = useState(
+    location.state.scriptState.value
+  );
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(
+    location.state.scriptState.value
+  );
+
   const goBack = () => {
     navigate('/home');
   };
+
+  const onSave = () => {
+    sendOrUpdate(scriptValue, location.state.scriptState.scriptName);
+  };
+
+  const onRun = () => {
+    execScript(location.state.scriptState.scriptName);
+  };
+
+  const onSchedule = () => {
+    setScheduleDialogOpen(true);
+  };
+
+  const scheduleDialog = (
+    <DateTimeDialog
+      open={scheduleDialogOpen}
+      onSubmit={async (value) => {
+        setScheduleDialogOpen(false);
+        scheduleScript(location.state.scriptState.scriptName, value);
+      }}
+      onCancel={() => {
+        setScheduleDialogOpen(false);
+      }}
+      title="Schedule script execution"
+      label="Date"
+    />
+  );
 
   return (
     <div
@@ -26,11 +67,11 @@ export default function FileViewScreen() {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           width: '100%',
           maxHeight: '100vh',
-          justifyContent: 'center',
-          alignItems: 'left',
+          justifyContent: 'spread',
+          alignItems: 'center',
         }}
       >
         <Typography variant="normal" align="left" sx={{ margin: '10px' }}>
@@ -39,7 +80,8 @@ export default function FileViewScreen() {
       </div>
       <TextEditor
         renderOptions={renderOptions}
-        scriptState={location.state.scriptState}
+        scriptValue={scriptValue}
+        setScriptValue={setScriptValue}
       />
       <div
         style={{
@@ -54,16 +96,17 @@ export default function FileViewScreen() {
         <Button variant="contained" onClick={goBack}>
           Go back
         </Button>
-        <Button variant="contained" onClick={goBack}>
-          Go back
+        <Button variant="contained" onClick={onSave}>
+          Save
         </Button>
-        <Button variant="contained" onClick={goBack}>
-          Go back
+        <Button variant="contained" onClick={onRun}>
+          Run
         </Button>
-        <Button variant="contained" onClick={goBack}>
-          Go back
+        <Button variant="contained" onClick={onSchedule}>
+          Schedule
         </Button>
       </div>
+      {scheduleDialog}
     </div>
   );
 }

@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { logIn } from '../network/client';
-import ThemeSelector from '../gui/theme_selector';
 import TopBar from '../gui/top_bar';
 
 export default function LogInScreen() {
@@ -58,7 +57,9 @@ export default function LogInScreen() {
                 margin="auto"
                 padding={3}
               >
-                <Typography variant="h6" align="center">Log in to Tanuki</Typography>
+                <Typography variant="h6" align="center">
+                  Log in to Tanuki
+                </Typography>
                 <TextField
                   autoFocus
                   margin="normal"

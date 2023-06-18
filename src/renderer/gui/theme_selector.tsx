@@ -4,11 +4,14 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-export default function ThemeSelector({ updateEditorTheme }) {
+export default function ThemeSelector({
+  forceDark = false,
+}: {
+  forceDark: boolean;
+}) {
   const [selected, setSelected] = React.useState(
     window.electron.store.get('theme')
   );
-
   const theme = React.useMemo(() => {
     return createTheme({
       palette: {
@@ -22,24 +25,38 @@ export default function ThemeSelector({ updateEditorTheme }) {
     setSelected(tmpSelected);
     await window.theme.set(tmpSelected);
     window.electron.store.set('theme', tmpSelected);
-    const darkTheme = await window.theme.get();
-    updateEditorTheme(darkTheme ? 'vs-dark' : 'vs-light');
   };
 
+  if (forceDark) {
+    return (
+      <ThemeProvider theme={theme}>
+        <TextField
+          select
+          label="Theme"
+          margin="normal"
+          value={selected}
+          onChange={onChange}
+          sx={{ minWidth: '100px' }}
+        >
+          <MenuItem value="light">Light</MenuItem>
+          <MenuItem value="dark">Dark</MenuItem>
+          <MenuItem value="system">System</MenuItem>
+        </TextField>
+      </ThemeProvider>
+    );
+  }
   return (
-    <ThemeProvider theme={theme}>
-      <TextField
-        select
-        label="Theme"
-        margin="normal"
-        value={selected}
-        onChange={onChange}
-        sx={{ minWidth: '100px' }}
-      >
-        <MenuItem value="light">Light</MenuItem>
-        <MenuItem value="dark">Dark</MenuItem>
-        <MenuItem value="system">System</MenuItem>
-      </TextField>
-    </ThemeProvider>
+    <TextField
+      select
+      label="Theme"
+      margin="normal"
+      value={selected}
+      onChange={onChange}
+      sx={{ minWidth: '100px' }}
+    >
+      <MenuItem value="light">Light</MenuItem>
+      <MenuItem value="dark">Dark</MenuItem>
+      <MenuItem value="system">System</MenuItem>
+    </TextField>
   );
 }

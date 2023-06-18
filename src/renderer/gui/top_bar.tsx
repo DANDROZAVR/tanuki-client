@@ -25,7 +25,7 @@ export default function TopAppBar() {
           <Button color="inherit" onClick={() => navigate('/pick_server')}>
             Change server
           </Button>
-          <ThemeSelector updateEditorTheme={(val: string) => {}} />
+          <ThemeSelector forceDark />
         </Toolbar>
       </AppBar>
     </Box>

@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createUser } from '../network/client.ts';
 import TopAppBar from '../gui/top_bar';
 
@@ -17,9 +17,9 @@ export default function SignUpScreen() {
 
   function onSubmit(e) {
     e.preventDefault();
-    createUser(username, password, response => {
+    createUser(username, password, (response) => {
       if (response.status !== 0) {
-        setErrorMessage("Error: " + response.message);
+        setErrorMessage(`Error: ${response.message}`);
       } else {
         navigate('/login');
       }
@@ -28,7 +28,7 @@ export default function SignUpScreen() {
 
   return (
     <>
-    <TopAppBar />
+      <TopAppBar />
       <Grid
         container
         spacing={0}
@@ -57,7 +57,9 @@ export default function SignUpScreen() {
                 margin="auto"
                 padding={3}
               >
-                <Typography variant="h6" align="center">Sign up to Tanuki</Typography>
+                <Typography variant="h6" align="center">
+                  Sign up to Tanuki
+                </Typography>
                 <TextField
                   autoFocus
                   margin="normal"
@@ -86,7 +88,8 @@ export default function SignUpScreen() {
             </Paper>
           </Box>
         </Grid>
-      </Grid><span className="red">{errorMessage}</span>
+      </Grid>
+      <span className="red">{errorMessage}</span>
     </>
   );
 }

@@ -19,60 +19,53 @@ export default function PickServerScreen() {
   };
 
   return (
-    <>
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: '100vh' }}
-      >
-        <Grid item xs={3}>
-          <Box
-            display="flex"
-            flexDirection="column"
-            maxWidth={400}
-            alignItems="center"
-            justifyContent="center"
-            margin="auto"
-            padding={3}
-          >
-            <Paper elevation={3}>
-              <Box
-                display="flex"
-                flexDirection="column"
-                maxWidth={400}
-                alignItems="center"
-                justifyContent="center"
-                margin="auto"
-                padding={3}
-              >
-                <TextField
-                  autoFocus
-                  margin="normal"
-                  id="outlined-basic"
-                  label="Server URL"
-                  variant="outlined"
-                  value={serverUrl}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setServerUrl(event.target.value);
-                  }}
-                />
-                <Button variant="contained" onClick={(e) => onSubmit(e)}>
-                  Pick server
-                </Button>
-              </Box>
-            </Paper>
-          </Box>
-        </Grid>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ minHeight: '100vh' }}
+    >
+      <Grid item xs={3}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          maxWidth={400}
+          alignItems="center"
+          justifyContent="center"
+          margin="auto"
+          padding={3}
+        >
+          <Paper elevation={3}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              maxWidth={400}
+              alignItems="center"
+              justifyContent="center"
+              margin="auto"
+              padding={3}
+            >
+              <TextField
+                autoFocus
+                margin="normal"
+                id="outlined-basic"
+                label="Server URL"
+                variant="outlined"
+                value={serverUrl}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setServerUrl(event.target.value);
+                }}
+              />
+              <Button variant="contained" onClick={(e) => onSubmit(e)}>
+                Pick server
+              </Button>
+              <ThemeSelector />
+            </Box>
+          </Paper>
+        </Box>
       </Grid>
-      <div className="formContainer">
-        <label>
-          Choose theme:
-          <ThemeSelector updateEditorTheme={(val: string) => {}} />
-        </label>
-      </div>
-    </>
+    </Grid>
   );
 }

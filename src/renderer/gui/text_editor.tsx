@@ -2,14 +2,12 @@ import './style.css';
 import { React, useRef, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { Options } from 'renderer/render_options';
-import { sendScript, execScript, scheduleScript, sendOrUpdate } from '../network/client.ts';
 import 'reactflow/dist/style.css';
-import { FunctionButton } from './util';
-import ThemeSelector from './theme_selector';
 
 export default function TextEditor({
   renderOptions,
-  scriptState,
+  scriptValue,
+  setScriptValue,
 }: {
   renderOptions: Options;
   scriptState: FileState;
@@ -30,52 +28,19 @@ export default function TextEditor({
     editorRef.current = editor;
   };
 
+  const onChange = (newVal, e) => {
+    setScriptValue(newVal);
+  };
+
   return (
-    <>
-      <Editor
-        value={scriptState.value}
-        width="100%"
-        height="100vh"
-        theme={theme}
-        defaultLanguage={renderOptions.defaultLanguage}
-        onMount={onEditorMount}
-      />
-      <FunctionButton
-        id="scriptTitle"
-        buttonText="Send"
-        placeholder={scriptState.scriptName}
-        onClick={(input) => {
-          sendOrUpdate(editorRef.current.getValue(), input);
-        }}
-      />
-      <FunctionButton
-        id="scriptToRun"
-        buttonText="Run script"
-        placeholder="script"
-        onClick={(input) => {
-          execScript(input);
-        }}
-      />
-        <input id="scheduleTitle" type="text" placeholder="my_script" />
-        <input
-          id="scheduleTime"
-          type="text"
-          placeholder={new Date().toLocaleString()}
-        />
-        <button
-          type="button"
-          onClick={(str) => {
-            const title = document.getElementById(
-              'scheduleTitle'
-            ) as HTMLInputElement | null;
-            const time = document.getElementById(
-              'scheduleTime'
-            ) as HTMLInputElement | null;
-            scheduleScript(title?.value, time?.value);
-          }}
-        >
-          Schedule
-        </button>
-    </>
+    <Editor
+      value={scriptValue}
+      width="100%"
+      height="100vh"
+      theme={theme}
+      defaultLanguage={renderOptions.defaultLanguage}
+      onChange={onChange}
+      onMount={onEditorMount}
+    />
   );
 }

@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import { TextDialog } from '../gui/util';
 import { DirInfo, loadScript, sendScript, logOut } from '../network/client';
 import RemoteFileBrowser from '../gui/file_browser';
-import ThemeSelector from '../gui/theme_selector';
 
 export default function ScriptManagerScreen() {
   const navigate = useNavigate();

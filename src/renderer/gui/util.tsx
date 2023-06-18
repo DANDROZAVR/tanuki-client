@@ -6,6 +6,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export function TextDialog({
   onSubmit,
@@ -54,6 +58,57 @@ export function TextDialog({
         </Button>
         <Button variant="contained" onClick={handleSubmit}>
           Create
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+export function DateTimeDialog({
+  onSubmit,
+  onCancel,
+  open,
+  title,
+  label,
+}: {
+  // eslint-disable-next-line no-unused-vars
+  onSubmit: (val: string) => void;
+  onCancel: () => void;
+  open: boolean;
+  title: string;
+  label: string;
+}) {
+  const [value, setValue] = useState<Dayjs?>(dayjs());
+  const handleSubmit = () => {
+    setValue('');
+    onSubmit(value.format('M/D/YYYY, h:m:s A'));
+  };
+
+  const handleCancel = () => {
+    setValue('');
+    onCancel();
+  };
+
+  return (
+    <Dialog onClose={handleCancel} open={open}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateTimePicker
+            label={label}
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+          />
+        </LocalizationProvider>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="text" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Schedule
         </Button>
       </DialogActions>
     </Dialog>
