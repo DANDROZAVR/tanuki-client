@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { renderOptions } from 'renderer/render_options';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import {
   ReactFlow,
   Background,
@@ -9,6 +10,7 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
   addEdge,
+  MarkerType,
 } from 'reactflow';
 import {
   StartNode,
@@ -41,20 +43,28 @@ export default function VisualScriptViewScreen() {
   const [nodes, setNodes] = React.useState(initialNodes);
   const [edges, setEdges] = React.useState(initialEdges);
 
-  const onNodesChange = React.useCallback(
-    (changes) => {
-      console.log(JSON.stringify(nodes));
-      setNodes((nds) => applyNodeChanges(changes, nds));
-    },[]
-  );
+  const onNodesChange = React.useCallback((changes) => {
+    setNodes((nds) => applyNodeChanges(changes, nds));
+  }, []);
   const onEdgesChange = React.useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
-  const onConnect = React.useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const onConnect = React.useCallback((params) => {
+    setEdges((eds) =>
+      addEdge(
+        {
+          ...params,
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+          },
+        },
+        eds
+      )
+    );
+  }, []);
 
   const onChangeData = (id, data) => {
     setNodes((nds) =>
@@ -62,7 +72,6 @@ export default function VisualScriptViewScreen() {
     );
   };
 
-  console.log(nodes);
   const spawnNode = (type: string) => {
     const len = nodes.length;
     const x = len > 0 ? nodes[len - 1].position.x : 0;
@@ -124,6 +133,20 @@ export default function VisualScriptViewScreen() {
         <Button variant="contained" onClick={() => spawnNode('press')}>Add press</Button>
         <Button variant="contained" onClick={() => spawnNode('exec')}>Add exec</Button>
         <Button variant="contained" onClick={() => spawnNode('start')}>Add start</Button>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px',
+        }}
+      >
+        <Typography variant="caption">
+          Focus node/edge and press backspacke to delete it.
+        </Typography>
       </div>
     </div>
   );
