@@ -19,6 +19,11 @@ import {
   TypeNode,
   PressNode,
 } from '../gui/nodes.tsx';
+import {
+  execScript,
+  scheduleScript,
+  sendOrUpdateNodes,
+} from '../network/client.ts';
 
 const nodeTypes = {
   start: StartNode,
@@ -26,10 +31,8 @@ const nodeTypes = {
   load: LoadNode,
   type: TypeNode,
   press: PressNode,
-
 };
 
-const initialNodes = [];
 const initialEdges = [];
 
 export default function VisualScriptViewScreen() {
@@ -40,8 +43,17 @@ export default function VisualScriptViewScreen() {
     navigate('/home');
   };
 
-  const [nodes, setNodes] = React.useState(initialNodes);
+  console.log(location.state.scriptState);
+
+  const [nodes, setNodes] = React.useState([]);
   const [edges, setEdges] = React.useState(initialEdges);
+
+  const onSave = () => {
+    sendOrUpdateNodes(
+      JSON.stringify(nodes),
+      location.state.scriptState.scriptName
+    );
+  };
 
   const onNodesChange = React.useCallback((changes) => {
     setNodes((nds) => applyNodeChanges(changes, nds));
@@ -71,7 +83,6 @@ export default function VisualScriptViewScreen() {
       nds.map((node) => (node.id === id ? { ...node, data } : node))
     );
   };
-  console.log(nodes);
 
   const spawnNode = (type: string) => {
     const len = nodes.length;
@@ -134,6 +145,7 @@ export default function VisualScriptViewScreen() {
         <Button variant="contained" onClick={() => spawnNode('press')}>Add press</Button>
         <Button variant="contained" onClick={() => spawnNode('exec')}>Add exec</Button>
         <Button variant="contained" onClick={() => spawnNode('start')}>Add start</Button>
+        <Button variant="contained" onClick={() => onSave()}>Save</Button>
       </div>
       <div
         style={{

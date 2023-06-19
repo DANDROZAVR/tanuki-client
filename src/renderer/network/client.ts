@@ -54,6 +54,27 @@ export async function sendScript(
   return scriptName;
 }
 
+export async function sendNodes(
+  script: string,
+  scriptName: string,
+  description = ''
+) {
+  sendRequest(
+    JSON.stringify({
+      type: 'insertScript',
+      user: signedUsername,
+      password: signedPassword,
+      title: scriptName,
+      source: '',
+      sourceNodes: script,
+      currentDir,
+      description,
+    }),
+    (response) => {}
+  );
+  return scriptName;
+}
+
 export async function updateScript(
   script: string,
   scriptName: string,
@@ -94,6 +115,52 @@ export async function sendOrUpdate(
         response.message == "Script with that name already exists"
       ) {
         updateScript(script, scriptName, description);
+      }
+    }
+  );
+  return scriptName;
+}
+
+export async function updateScriptNodes(
+  script: string,
+  scriptName: string,
+  description = ''
+) {
+  sendRequest(
+    JSON.stringify({
+      type: 'updateScript',
+      user: signedUsername,
+      password: signedPassword,
+      path: currentDir + scriptName,
+      description,
+      sourceNodes: script,
+    }),
+    (response) => {}
+  );
+  return scriptName;
+}
+
+export async function sendOrUpdateNodes(
+  script: string,
+  scriptName: string,
+  description = ''
+) {
+  sendRequest(
+    JSON.stringify({
+      type: 'insertScript',
+      user: signedUsername,
+      password: signedPassword,
+      title: scriptName,
+      sourceNodes: script,
+      currentDir,
+      description,
+    }),
+    (response) => {
+      if (
+        response.status == 1 &&
+        response.message == "Script with that name already exists"
+      ) {
+        updateScript(script, scriptNodes, scriptName, description);
       }
     }
   );
@@ -145,7 +212,7 @@ export async function loadScript(
         if (response.status === 0) {
           const scriptState = {
             scriptName: dirInfo.name,
-            value: response.message.source,
+            ...response.message,
             defaultLanguage: 'typescript',
           } as FileState;
           scriptCallback(scriptState);

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { TextDialog } from '../gui/util';
-import { DirInfo, loadScript, sendScript, logOut } from '../network/client';
+import { DirInfo, loadScript, sendScript, sendNodes, logOut } from '../network/client';
 import RemoteFileBrowser from '../gui/file_browser';
 
 export default function ScriptManagerScreen() {
@@ -19,39 +19,39 @@ export default function ScriptManagerScreen() {
   };
 
   const onLoadScript = (scriptName: string) => {
-    loadScript(
-      {
-        name: scriptName,
-        description: '',
-        isDirectory: false,
-      } as DirInfo,
-      (scriptState) => {
-        navigate('/script_view', {
-          state: {
-            scriptState,
-          },
-        });
-      },
-      (directoryState) => {}
-    );
-  };
-
-  const onLoadVisualScript = (scriptName: string) => {
-    loadScript(
-      {
-        name: scriptName,
-        description: '',
-        isDirectory: false,
-      } as DirInfo,
-      (scriptState) => {
-        navigate('/visual_script_view', {
-          state: {
-            scriptState,
-          },
-        });
-      },
-      (directoryState) => {}
-    );
+    if (scriptName.split('.')[1] === 'tnk') {
+      loadScript(
+        {
+          name: scriptName,
+          description: '',
+          isDirectory: false,
+        } as DirInfo,
+        (scriptState) => {
+          navigate('/script_view', {
+            state: {
+              scriptState,
+            },
+          });
+        },
+        (directoryState) => {}
+      );
+    } else {
+      loadScript(
+        {
+          name: scriptName,
+          description: '',
+          isDirectory: false,
+        } as DirInfo,
+        (scriptState) => {
+          navigate('/visual_script_view', {
+            state: {
+              scriptState,
+            },
+          });
+        },
+        (directoryState) => {}
+      );
+    }
   };
 
   const goToPlayground = () => {
@@ -68,8 +68,8 @@ export default function ScriptManagerScreen() {
       open={newScriptOpen}
       onSubmit={async (value) => {
         setNewScriptOpen(false);
-        await sendScript('', value, '');
-        onLoadScript(value);
+        await sendScript('', `${value}.tnk`, '');
+        onLoadScript(`${value}.tnk`);
       }}
       onCancel={() => {
         setNewScriptOpen(false);
@@ -84,8 +84,8 @@ export default function ScriptManagerScreen() {
       open={newVisualScriptOpen}
       onSubmit={async (value) => {
         setNewVisualScriptOpen(false);
-        await sendScript('', value, '');
-        onLoadVisualScript(value);
+        await sendNodes('[]', `${value}.vtnk`, '');
+        onLoadScript(`${value}.vtnk`);
       }}
       onCancel={() => {
         setNewVisualScriptOpen(false);

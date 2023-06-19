@@ -5,12 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextEditor from '../gui/text_editor';
 import { DateTimeDialog } from '../gui/util';
-import {
-  sendScript,
-  execScript,
-  scheduleScript,
-  sendOrUpdate,
-} from '../network/client.ts';
+import { execScript, scheduleScript, sendOrUpdate } from '../network/client.ts';
 
 export default function FileViewScreen() {
   const location = useLocation();
@@ -18,9 +13,7 @@ export default function FileViewScreen() {
   const [scriptValue, setScriptValue] = useState(
     location.state.scriptState.value
   );
-  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(
-    location.state.scriptState.value
-  );
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
 
   const goBack = () => {
     navigate('/home');
