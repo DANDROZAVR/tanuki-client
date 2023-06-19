@@ -146,6 +146,7 @@ export async function updateNodes(
 
 export async function sendOrUpdateNodes(
   script: string,
+  edges: string,
   scriptName: string,
   description = ''
 ) {
@@ -156,6 +157,7 @@ export async function sendOrUpdateNodes(
       password: signedPassword,
       title: scriptName,
       sourceNodes: script,
+      sourceEdges: edges,
       currentDir,
       description,
     }),
@@ -164,7 +166,7 @@ export async function sendOrUpdateNodes(
         response.status == 1 &&
         response.message == "Script with that name already exists"
       ) {
-        updateNodes(scriptNodes, scriptEdges, scriptName, description);
+        updateNodes(script, edges, scriptName, description);
       }
     }
   );

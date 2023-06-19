@@ -87,6 +87,19 @@ export default function FileViewScreen() {
           padding: '10px',
         }}
       >
+        <Typography variant="h5">Server log: </Typography>
+        <p>{log}</p>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px',
+        }}
+      >
         <Button variant="contained" onClick={goBack}>
           Go back
         </Button>
@@ -99,19 +112,6 @@ export default function FileViewScreen() {
         <Button variant="contained" onClick={onSchedule}>
           Schedule
         </Button>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px',
-        }}
-      >
-        Server response:
-        <p>{log}</p>
       </div>
       {scheduleDialog}
     </div>
