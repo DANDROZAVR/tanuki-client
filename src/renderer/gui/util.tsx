@@ -10,6 +10,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export function TextDialog({
   onSubmit,
@@ -183,5 +185,33 @@ export function FunctionButton({
         {buttonText}
       </button>
     </section>
+  );
+}
+
+export function ErrorSnackbar({
+  open,
+  setOpen,
+  message,
+}: {
+  open: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setOpen: (val: boolean) => void;
+  message: string;
+}) {
+  return (
+    <Snackbar
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      open={open}
+      autoHideDuration={6000}
+      onClose={() => setOpen(false)}
+    >
+      <Alert
+        onClose={() => setOpen(false)}
+        severity="error"
+        sx={{ width: '100%' }}
+      >
+        {message}
+      </Alert>
+    </Snackbar>
   );
 }

@@ -9,7 +9,6 @@ export default function ScriptManagerScreen() {
   const navigate = useNavigate();
   const [newScriptOpen, setNewScriptOpen] = useState(false);
   const [newVisualScriptOpen, setNewVisualScriptOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const newScript = () => {
     setNewScriptOpen(true);

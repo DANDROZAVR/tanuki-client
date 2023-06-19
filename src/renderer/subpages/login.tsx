@@ -8,12 +8,14 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { logIn } from '../network/client';
 import TopBar from '../gui/top_bar';
+import {ErrorSnackbar} from '../gui/util';
 
 export default function LogInScreen() {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = React.useState(false);
 
   const validate = (value: string) =>
     /^[a-zA-Z0-9_]*$/.test(value) && value.length > 0 && value.length < 25;
@@ -29,13 +31,14 @@ export default function LogInScreen() {
     } else {
       logIn(username, password, (response) => {
         if (response.status !== 0) {
-          setErrorMessage('Error: ' + response.message);
+          setErrorMessage(`Error: ${response.message}`);
+          setErrorSnackbarOpen(true);
         } else {
           navigate('/home');
         }
       });
     }
-  }
+  };
 
   return (
     <>
@@ -112,9 +115,12 @@ export default function LogInScreen() {
           </Box>
         </Grid>
       </Grid>
-      <div className="formContainer">
-        <span className="red">{errorMessage}</span>
-      </div>
+      <ErrorSnackbar
+        open={errorSnackbarOpen}
+        setOpen={setErrorSnackbarOpen}
+        autoHideDuration={6000}
+        message={errorMessage}
+      />
     </>
   );
 }

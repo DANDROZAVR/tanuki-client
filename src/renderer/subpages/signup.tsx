@@ -8,12 +8,14 @@ import Paper from '@mui/material/Paper';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../network/client.ts';
 import TopAppBar from '../gui/top_bar';
+import {ErrorSnackbar} from '../gui/util';
 
 export default function SignUpScreen() {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = React.useState(false);
 
   const validate = (value: string) =>
   /^[a-zA-Z0-9_]*$/.test(value) && value.length > 0 && value.length < 25;
@@ -30,6 +32,7 @@ export default function SignUpScreen() {
       createUser(username, password, (response) => {
         if (response.status !== 0) {
           setErrorMessage(`Error: ${response.message}`);
+          setErrorSnackbarOpen(true);
         } else {
           navigate('/login');
         }
@@ -113,7 +116,12 @@ export default function SignUpScreen() {
           </Box>
         </Grid>
       </Grid>
-      <span className="red">{errorMessage}</span>
+      <ErrorSnackbar
+        open={errorSnackbarOpen}
+        setOpen={setErrorSnackbarOpen}
+        autoHideDuration={6000}
+        message={errorMessage}
+      />
     </>
   );
 }
