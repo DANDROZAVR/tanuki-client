@@ -11,6 +11,7 @@ import TopBar from '../gui/top_bar';
 import {ErrorSnackbar} from '../gui/util';
 
 export default function LogInScreen() {
+
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');

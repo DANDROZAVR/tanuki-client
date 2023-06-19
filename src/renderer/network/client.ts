@@ -5,6 +5,8 @@ let url = 'http://localhost:3001';
 let signedUsername = '';
 let signedPassword = '';
 let currentDir = '';
+let logs:string[] = ["cokolwiek"];
+export {logs}
 
 export function setCurrentPath(path: string) {
   currentDir = path;
@@ -37,7 +39,8 @@ async function sendRequest(message: string, callback) {
 export async function sendScript(
   script: string,
   scriptName: string,
-  description = ''
+  description = '',
+  pureJSCode: boolean = false
 ) {
   sendRequest(
     JSON.stringify({
@@ -48,8 +51,9 @@ export async function sendScript(
       source: script,
       currentDir,
       description,
+      pureJSCode
     }),
-    (response) => {}
+    (response) => {logs.push(response.message)}
   );
   return scriptName;
 }
@@ -72,7 +76,7 @@ export async function sendNodes(
       currentDir,
       description,
     }),
-    (response) => {}
+    (response) => {logs.push(response.message)}
   );
   return scriptName;
 }
@@ -80,7 +84,8 @@ export async function sendNodes(
 export async function updateScript(
   script: string,
   scriptName: string,
-  description = ''
+  description = '',
+  pureJSCode = false
 ) {
   sendRequest(
     JSON.stringify({
@@ -90,6 +95,7 @@ export async function updateScript(
       path: currentDir + scriptName,
       description,
       source: script,
+      pureJSCode
     }),
     (response) => {}
   );
@@ -99,7 +105,8 @@ export async function updateScript(
 export async function sendOrUpdate(
   script: string,
   scriptName: string,
-  description = ''
+  description = '',
+  pureJSCode = false
 ) {
   sendRequest(
     JSON.stringify({
@@ -110,13 +117,15 @@ export async function sendOrUpdate(
       source: script,
       currentDir,
       description,
+      pureJSCode
     }),
     (response) => {
+      logs.push(response.message)
       if (
         response.status == 1 &&
         response.message == "Script with that name already exists"
       ) {
-        updateScript(script, scriptName, description);
+        updateScript(script, scriptName, description, pureJSCode);
       }
     }
   );
@@ -140,7 +149,7 @@ export async function updateNodes(
       sourceNodes: script,
       sourceEdges: edges,
     }),
-    (response) => {}
+    (response) => {logs.push(response.message)}
   );
   return scriptName;
 }
@@ -203,6 +212,7 @@ export async function loadScript(
         path: newPath,
       }),
       (response) => {
+        logs.push(response.message)
         if (response.status === 0) {
           currentDir = newPath;
           directoryCallback(response.contents);
@@ -218,6 +228,7 @@ export async function loadScript(
         path: currentDir + dirInfo.name,
       }),
       (response) => {
+        logs.push(response.message)
         if (response.status === 0) {
           const scriptState = {
             scriptName: dirInfo.name,
@@ -240,6 +251,7 @@ export async function loadCurrentDirectory(callback) {
       path: currentDir,
     }),
     (response) => {
+      logs.push(response.message)
       if (response.status === 0) {
         // in response.message.contents we get array of dirInfo - contents of chosen directory
         const contents = response.message.contents as DirInfo[];
@@ -258,6 +270,7 @@ export async function loadParentDirectory(callback) {
       path: currentDir,
     }),
     (response) => {
+      logs.push(response.message)
       if (response.status === 0) {
         currentDir = response.path;
         loadCurrentDirectory(callback);
@@ -281,7 +294,7 @@ export async function createDirectory(name: string, description = '') {
       currentDir,
       description,
     }),
-    (response) => {}
+    (response) => {logs.push(response.message)}
   );
 }
 
@@ -293,7 +306,7 @@ export async function deleteScript(dirInfo: DirInfo) {
       password: signedPassword,
       path: currentDir + dirInfo.name + (dirInfo.isDirectory ? '/' : ''),
     }),
-    (response) => {}
+    (response) => {logs.push(response.message)}
   );
 }
 
@@ -327,17 +340,7 @@ export async function logIn(username: string, password: string, callback) {
 }
 
 export async function scheduleScript(scriptName: string, scheduleTime: string) {
-  /* establish http connection */
-  const request = new XMLHttpRequest();
-  request.open('POST', url, true);
-  request.onreadystatechange = function onStateChange() {
-    if (request.readyState === 4 && request.status === 200) {
-      const response = JSON.parse(request.response);
-      alert(response.message);
-    }
-  };
-  request.setRequestHeader('Content-type', 'application/json');
-  request.send(
+  sendRequest(
     JSON.stringify({
       type: 'scheduleScript',
       user: signedUsername,
@@ -349,7 +352,8 @@ export async function scheduleScript(scriptName: string, scheduleTime: string) {
           date: scheduleTime,
         },
       },
-    })
+    }),
+    (response) => {logs.push(response.message)}
   );
 }
 

@@ -21,7 +21,7 @@ export default function FileViewScreen() {
   };
 
   const onSave = () => {
-    sendOrUpdate(scriptValue, location.state.scriptState.scriptName);
+    sendOrUpdate(scriptValue, location.state.scriptState.scriptName, "", checked);
   };
 
   const onRun = () => {
@@ -33,6 +33,7 @@ export default function FileViewScreen() {
   };
 
   const scheduleDialog = (
+
     <DateTimeDialog
       open={scheduleDialogOpen}
       onSubmit={async (value) => {
@@ -46,6 +47,12 @@ export default function FileViewScreen() {
       label="Date"
     />
   );
+
+  let [checked, setChecked] = React.useState(false);
+
+  const handleChange = () => {
+    setChecked(!checked);
+  };
 
   return (
     <div
@@ -106,6 +113,17 @@ export default function FileViewScreen() {
         <Button variant="contained" onClick={onSave}>
           Save
         </Button>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={handleChange}
+            />
+            pure JS Code
+          </label>
+
+        </div>
         <Button variant="contained" onClick={onRun}>
           Run
         </Button>

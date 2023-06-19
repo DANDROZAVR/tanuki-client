@@ -9,9 +9,14 @@ export default function ScriptManagerScreen() {
   const navigate = useNavigate();
   const [newScriptOpen, setNewScriptOpen] = useState(false);
   const [newVisualScriptOpen, setNewVisualScriptOpen] = useState(false);
+  const [newJSScriptOpen, setNewJSScriptOpen] = useState(false);
 
   const newScript = () => {
     setNewScriptOpen(true);
+  };
+
+  const newJSScript = () => {
+    setNewJSScriptOpen(true);
   };
 
   const newVisualScript = () => {
@@ -19,7 +24,7 @@ export default function ScriptManagerScreen() {
   };
 
   const onLoadScript = (scriptName: string) => {
-    if (scriptName.split('.')[1] === 'tnk') {
+    if (scriptName.split('.')[1] === 'tnk' || scriptName.split('.')[1] === 'js') {
       loadScript(
         {
           name: scriptName,
