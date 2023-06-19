@@ -136,6 +136,7 @@ export async function updateNodes(
       password: signedPassword,
       path: currentDir + scriptName,
       description,
+      source: '',
       sourceNodes: script,
       sourceEdges: edges,
     }),
@@ -156,12 +157,14 @@ export async function sendOrUpdateNodes(
       user: signedUsername,
       password: signedPassword,
       title: scriptName,
+      source: '',
       sourceNodes: script,
       sourceEdges: edges,
       currentDir,
       description,
     }),
     (response) => {
+      console.log(response);
       if (
         response.status == 1 &&
         response.message == "Script with that name already exists"
