@@ -56,6 +56,7 @@ export async function sendScript(
 
 export async function sendNodes(
   script: string,
+  edges: string,
   scriptName: string,
   description = ''
 ) {
@@ -66,6 +67,7 @@ export async function sendNodes(
       password: signedPassword,
       title: scriptName,
       source: '',
+      sourceEdges: edges,
       sourceNodes: script,
       currentDir,
       description,
@@ -121,8 +123,9 @@ export async function sendOrUpdate(
   return scriptName;
 }
 
-export async function updateScriptNodes(
+export async function updateNodes(
   script: string,
+  edges: string,
   scriptName: string,
   description = ''
 ) {
@@ -134,6 +137,7 @@ export async function updateScriptNodes(
       path: currentDir + scriptName,
       description,
       sourceNodes: script,
+      sourceEdges: edges,
     }),
     (response) => {}
   );
@@ -160,7 +164,7 @@ export async function sendOrUpdateNodes(
         response.status == 1 &&
         response.message == "Script with that name already exists"
       ) {
-        updateScript(script, scriptNodes, scriptName, description);
+        updateNodes(scriptNodes, scriptEdges, scriptName, description);
       }
     }
   );

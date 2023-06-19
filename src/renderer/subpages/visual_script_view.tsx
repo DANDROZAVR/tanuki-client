@@ -33,8 +33,6 @@ const nodeTypes = {
   press: PressNode,
 };
 
-const initialEdges = [];
-
 export default function VisualScriptViewScreen() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,14 +43,22 @@ export default function VisualScriptViewScreen() {
 
   console.log(location.state.scriptState);
 
-  const [nodes, setNodes] = React.useState([]);
-  const [edges, setEdges] = React.useState(initialEdges);
+  const [nodes, setNodes] = React.useState(
+    JSON.parse(location.state.scriptState.scriptNodes ?? '[]')
+  );
+  const [edges, setEdges] = React.useState(
+    JSON.parse(location.state.scriptState.scriptEdges ?? '[]')
+  );
 
   const onSave = () => {
     sendOrUpdateNodes(
       JSON.stringify(nodes),
+      JSON.stringify(edges),
       location.state.scriptState.scriptName
     );
+  };
+  const onRun = () => {
+    execScript(location.state.scriptState.scriptName);
   };
 
   const onNodesChange = React.useCallback((changes) => {
@@ -146,6 +152,7 @@ export default function VisualScriptViewScreen() {
         <Button variant="contained" onClick={() => spawnNode('exec')}>Add exec</Button>
         <Button variant="contained" onClick={() => spawnNode('start')}>Add start</Button>
         <Button variant="contained" onClick={() => onSave()}>Save</Button>
+        <Button variant="contained" onClick={() => onRun()}>Run</Button>
       </div>
       <div
         style={{

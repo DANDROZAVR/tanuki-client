@@ -84,7 +84,7 @@ export default function ScriptManagerScreen() {
       open={newVisualScriptOpen}
       onSubmit={async (value) => {
         setNewVisualScriptOpen(false);
-        await sendNodes('[]', `${value}.vtnk`, '');
+        await sendNodes('[]', '[]', `${value}.vtnk`, '');
         onLoadScript(`${value}.vtnk`);
       }}
       onCancel={() => {
@@ -122,9 +122,9 @@ export default function ScriptManagerScreen() {
         <Button variant="contained" onClick={newVisualScript}>
           New visual script
         </Button>
-        <Button variant="contained" onClick={goToPlayground}>
+        {/*<Button variant="contained" onClick={goToPlayground}>
           Go to playground
-        </Button>
+      </Button>*/}
         <Button variant="contained" onClick={onLogOut}>
           Log out
         </Button>
