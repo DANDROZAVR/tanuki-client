@@ -171,7 +171,7 @@ export async function sendOrUpdateNodes(
   return scriptName;
 }
 
-export async function execScript(scriptName: string) {
+export async function execScript(scriptName: string, callback) {
   sendRequest(
     JSON.stringify({
       type: 'execScript',
@@ -179,7 +179,7 @@ export async function execScript(scriptName: string) {
       password: signedPassword,
       path: currentDir + scriptName,
     }),
-    (response) => {}
+    callback
   );
 }
 

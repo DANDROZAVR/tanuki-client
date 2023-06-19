@@ -58,7 +58,7 @@ export default function VisualScriptViewScreen() {
     );
   };
   const onRun = () => {
-    execScript(location.state.scriptState.scriptName);
+    execScript(location.state.scriptState.scriptName, (response) => {});
   };
 
   const onNodesChange = React.useCallback((changes) => {

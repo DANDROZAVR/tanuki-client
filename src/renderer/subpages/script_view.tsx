@@ -14,6 +14,7 @@ export default function FileViewScreen() {
     location.state.scriptState.value
   );
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [log, setLog] = useState('');
 
   const goBack = () => {
     navigate('/home');
@@ -24,7 +25,7 @@ export default function FileViewScreen() {
   };
 
   const onRun = () => {
-    execScript(location.state.scriptState.scriptName);
+    execScript(location.state.scriptState.scriptName, (response) => {setLog(JSON.stringify(response))});
   };
 
   const onSchedule = () => {
@@ -98,6 +99,19 @@ export default function FileViewScreen() {
         <Button variant="contained" onClick={onSchedule}>
           Schedule
         </Button>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px',
+        }}
+      >
+        Server response:
+        <p>{log}</p>
       </div>
       {scheduleDialog}
     </div>
